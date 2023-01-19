@@ -2,6 +2,7 @@ package Main;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,6 +33,11 @@ public class GestorArboles {
 			
 			//String SentenciaDelete = "DELETE FROM nombreTabla WHERE nombre = 'gato'";
 			//st.execute(SentenciaDelete);
+			
+			//PreparedStatement preparedSt = con.prepareStatement(BBDD);
+			//preparedSt.setString(1, "Ecualipto");
+			//preparedSt.execute();
+			
 			
 			final int OPCION_UNO = 1;
 			final int OPCION_DOS = 2;
@@ -95,8 +101,11 @@ public class GestorArboles {
 				case OPCION_CUATRO:
 					System.out.println("Introduce el id del Arbol a visualizar");
 					int idv = Integer.parseInt(scan.nextLine());
-					String sentenciaSelect ="SELECT * FROM `eh_garden` WHERE  id = "+idv+"";
+					String sentenciaSelect ="SELECT * FROM `eh_garden` WHERE ID ="+idv +"";
 					ResultSet result = st.executeQuery(sentenciaSelect);
+					while(result.next()) {
+						System.out.println(result.getString(2) + "-" + result.getString(3) + "-" + result.getString(4) + "-" + result.getInt(5) +"-"+result.getString(6));
+					}
 					break;
 				case SALIR:
 					System.out.println("ADIOS");
