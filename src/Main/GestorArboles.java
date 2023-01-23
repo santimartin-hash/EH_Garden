@@ -72,14 +72,20 @@ public class GestorArboles {
 					int altura = Integer.parseInt(scan.nextLine());
 					System.out.println("introduce origen");
 					String origen = scan.nextLine();
-					String sentenciaInsert = "INSERT INTO  `eh_garden` ( `nombre_comun`, `nombre_cientifico`, `habitat`, `altura`, `origen`) VALUES ('" + nombreArbol + "','"+nombre100+"','"+habitat+"',"+altura+",'"+origen+"')";
-					st.execute(sentenciaInsert);
+					PreparedStatement preparedSt = con.prepareStatement("INSERT INTO  eh_garden ( nombre_comun, nombre_cientifico, habitat, altura, origen) VALUES (?,?,?,?,?);");
+					preparedSt.setString(1, nombreArbol );
+					preparedSt.setString(2, nombre100 );
+					preparedSt.setString(3, habitat );
+					preparedSt.setInt(4, altura );
+					preparedSt.setString(5, origen );
+					preparedSt.execute();
 					break;
 				case OPCION_DOS:
 					System.out.println("Introduce el id del Arbol a eliminar");
 					int id = Integer.parseInt(scan.nextLine());
-					String sentenciaDelete = "DELETE FROM `eh_garden` WHERE id = "+ id + " ;";
-					st.execute(sentenciaDelete);
+					PreparedStatement preparedStel = con.prepareStatement("DELETE FROM eh_garden WHERE id = ? ;");
+					preparedStel.setInt(1, id );
+					preparedStel.execute();
 					break;
 				case OPCION_TRES:
 					String nombreTablam = "eh_garden";
@@ -95,14 +101,22 @@ public class GestorArboles {
 					int alturam = Integer.parseInt(scan.nextLine());
 					System.out.println("introduce nuevo origen");
 					String origenm = scan.nextLine();
-					String sentenciaUpdate = "UPDATE `eh_garden` SET `nombre_comun`='"+nombreArbolm+"',`nombre_cientifico`='"+nombre100m+"',`habitat`='"+habitatm+"',`altura`='"+alturam+"',`origen`=' "+origenm+ "' WHERE id = " + idm +";";
-					st.execute(sentenciaUpdate);
+					PreparedStatement preparedStModify = con.prepareStatement("UPDATE eh_garden SET nombre_comun= (?),nombre_cientifico= (?),habitat= (?),altura= (?),origen= (?) WHERE id = (?);");
+					preparedStModify.setInt(6, idm );
+					preparedStModify.setString(1, nombreArbolm );
+					preparedStModify.setString(2, nombre100m );
+					preparedStModify.setString(3, habitatm );
+					preparedStModify.setInt(4, alturam );
+					preparedStModify.setString(5, origenm );
+					preparedStModify.execute();
 					break;
 				case OPCION_CUATRO:
 					System.out.println("Introduce el id del Arbol a visualizar");
 					int idv = Integer.parseInt(scan.nextLine());
-					String sentenciaSelect ="SELECT * FROM `eh_garden` WHERE ID ="+idv +"";
-					ResultSet result = st.executeQuery(sentenciaSelect);
+					PreparedStatement preparedStvi = con.prepareStatement("SELECT * FROM eh_garden WHERE id = ?");
+					preparedStvi.setInt(1, idv );
+					ResultSet result = preparedStvi.executeQuery();
+					
 					while(result.next()) {
 						System.out.println(result.getString(2) + "-" + result.getString(3) + "-" + result.getString(4) + "-" + result.getInt(5) +"-"+result.getString(6));
 					}
